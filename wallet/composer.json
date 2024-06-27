@@ -1,0 +1,8 @@
+{
+    "require": {
+        "messagebird/php-rest-api": "^3.0",
+        "clicksend/clicksend-php": "^5.0",
+        "phpmailer/phpmailer": "^6.6",
+        "chillerlan/php-qrcode": "^4.3"
+    }
+}

